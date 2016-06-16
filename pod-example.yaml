@@ -5,20 +5,18 @@ metadata:
 spec:
   containers:
   - name: fluentd-elastic
-    image: gcr.io/falkonry-tercel/fluentd-elastic:1.1
+    image: docker.io/falkonry/fluentd-elastic:latest
     resources:
       limits:
         cpu: 100m
         memory: 200Mi
     env:
-    - name: "SPLUNK_SERVER"
-      value: "localhost:8089"
-    - name: "SPLUNK_AUTH"
-      value: "admin:changeme"
-    - name: "SPLUNK_INDEX"
-      value: "main"
-    - name: "FLUENTD_ARGS"
-      value: "-q"
+    - name: "ELASTIC_HOST"
+      value: "hostname"
+    - name: "ELASTIC_PORT"
+      value: "port"
+    - name: "ELASTIC_INDEX"
+      value: "kubernetes"
     volumeMounts:
     - name: varlog
       mountPath: /var/log
