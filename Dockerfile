@@ -1,17 +1,11 @@
 # This Dockerfile will build an image that is configured
-# to run Fluentd with a Splunk plug-in and the
+# to run Fluentd with a elasticsearch plug-in and the
 # provided configuration file.
-# TODO: Use a lighter base image, e.g. some form of busybox.
-# The image acts as an executable for the binary /usr/sbin/td-agent.
-# Note that fluentd is run with root permssion to allow access to
-# log files with root only access under /var/log/containers/*
-# Please see http://docs.fluentd.org/articles/install-by-deb for more
-# information about installing fluentd using deb package.
 
 FROM gcr.io/google_containers/ubuntu-slim:0.4
 
 # Ensure there are enough file descriptors for running Fluentd.
-RUN ulimit -n 65536
+# RUN ulimit -n 65536
 
 # Disable prompts from apt.
 ENV DEBIAN_FRONTEND noninteractive
