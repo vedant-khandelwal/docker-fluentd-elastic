@@ -45,6 +45,8 @@ ENV LD_PRELOAD /opt/td-agent/embedded/lib/libjemalloc.so
 ENV ELASTIC_HOST localhost
 ENV ELASTIC_PORT 9200
 ENV ELASTIC_INDEX docker
+ENV ENV_HOST localhost
+ENV FALKONRY_URL localhost
 
 # Run the Fluentd service.
 ENTRYPOINT ["td-agent"]
