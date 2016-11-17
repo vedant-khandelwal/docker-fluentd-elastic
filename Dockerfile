@@ -40,9 +40,8 @@ COPY td-agent.conf /etc/td-agent/td-agent.conf
 # FLUENTD_ARGS cannot be empty, so a placeholder is used. It should not have any effect because it is a default.
 ENV ELASTIC_HOST localhost
 ENV ELASTIC_PORT 9200
-ENV ELASTIC_INDEX kubernetes
+ENV ELASTIC_INDEX docker
 ENV FLUENTD_ARGS --use-v1-config
-ENV KUBE_VERIFY_SSL true
 
 # Run the Fluentd service.
 ENTRYPOINT "exec" "td-agent" "$FLUENTD_ARGS"
