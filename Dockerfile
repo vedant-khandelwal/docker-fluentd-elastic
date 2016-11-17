@@ -8,7 +8,7 @@
 # Please see http://docs.fluentd.org/articles/install-by-deb for more
 # information about installing fluentd using deb package.
 
-FROM ubuntu:14.04
+FROM gcr.io/google_containers/ubuntu-slim:0.4
 
 # Ensure there are enough file descriptors for running Fluentd.
 RUN ulimit -n 65536
@@ -18,30 +18,39 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Install prerequisites.
 RUN apt-get update && \
-    apt-get install -y -q curl make g++ && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    apt-get install -y -q --no-install-recommends curl ca-certificates make g++ sudo bash
 
 # Install Fluentd.
-RUN /usr/bin/curl -L https://td-toolbelt.herokuapp.com/sh/install-ubuntu-trusty-td-agent2.sh | sh
+RUN /usr/bin/curl -sSL https://toolbelt.treasuredata.com/sh/install-ubuntu-xenial-td-agent2.sh | sh
 
 # Change the default user and group to root.
 # Needed to allow access to /var/log/docker/... files.
 RUN sed -i -e "s/USER=td-agent/USER=root/" -e "s/GROUP=td-agent/GROUP=root/" /etc/init.d/td-agent
 
-# Install the Kubernetes and Splunk Fluentd plug-ins.
-# Note: net-http-persistent library is required by splunk plugin, but not automatically installed
-RUN td-agent-gem install fluent-plugin-kubernetes_metadata_filter net-http-persistent fluent-plugin-elasticsearch
+# Install the elasticsearch plug-ins.
+RUN td-agent-gem install --no-document fluent-plugin-elasticsearch
+
+RUN rm -rf /opt/td-agent/embedded/share/doc \
+  /opt/td-agent/embedded/share/gtk-doc \
+  /opt/td-agent/embedded/lib/postgresql \
+  /opt/td-agent/embedded/bin/postgres \
+  /opt/td-agent/embedded/share/postgresql
+
+# Cleanup
+RUN apt-get remove -y make g++
+RUN apt-get autoremove -y 
+RUN apt-get clean -y
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy the Fluentd configuration file.
 COPY td-agent.conf /etc/td-agent/td-agent.conf
 
+ENV LD_PRELOAD /opt/td-agent/embedded/lib/libjemalloc.so
+
 # Environment variables for configuration
-# FLUENTD_ARGS cannot be empty, so a placeholder is used. It should not have any effect because it is a default.
 ENV ELASTIC_HOST localhost
 ENV ELASTIC_PORT 9200
 ENV ELASTIC_INDEX docker
-ENV FLUENTD_ARGS --use-v1-config
 
 # Run the Fluentd service.
-ENTRYPOINT "exec" "td-agent" "$FLUENTD_ARGS"
+ENTRYPOINT ["td-agent"]
