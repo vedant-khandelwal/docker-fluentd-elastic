@@ -5,18 +5,16 @@ metadata:
 spec:
   containers:
   - name: fluentd-elastic
-    image: docker.io/falkonry/fluentd-elastic:latest
+    image: docker.io/falkonry/fluentd-elastic:oms
     resources:
       limits:
         cpu: 100m
         memory: 200Mi
     env:
-    - name: "ELASTIC_HOST"
-      value: "hostname"
-    - name: "ELASTIC_PORT"
-      value: "port"
-    - name: "ELASTIC_INDEX"
-      value: "kubernetes"
+    - name: "WORKSPACE"
+      value: "workspace-id"
+    - name: "KEY"
+      value: "key"
     volumeMounts:
     - name: varlog
       mountPath: /var/log
