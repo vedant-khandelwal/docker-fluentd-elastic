@@ -43,6 +43,8 @@ ENV ELASTIC_PORT 9200
 ENV ELASTIC_INDEX kubernetes
 ENV FLUENTD_ARGS --use-v1-config
 ENV KUBE_VERIFY_SSL true
+ENV LOGGING_AGENT_HOST logging-agent
+ENV LOGGING_AGENT_PORT 24224
 
 # Run the Fluentd service.
 ENTRYPOINT "exec" "td-agent" "$FLUENTD_ARGS"
