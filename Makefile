@@ -1,6 +1,6 @@
 .PHONY:	build push
 
-TAG = 1.1
+TAG = loggly
 
 build:
 	docker build -t docker.io/falkonry/fluentd-elastic:$(TAG) .

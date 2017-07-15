@@ -31,17 +31,14 @@ RUN sed -i -e "s/USER=td-agent/USER=root/" -e "s/GROUP=td-agent/GROUP=root/" /et
 
 # Install the Kubernetes and Splunk Fluentd plug-ins.
 # Note: net-http-persistent library is required by splunk plugin, but not automatically installed
-RUN td-agent-gem install fluent-plugin-kubernetes_metadata_filter net-http-persistent fluent-plugin-elasticsearch
+RUN td-agent-gem install fluent-plugin-kubernetes_metadata_filter net-http-persistent fluent-plugin-loggly
 
 # Copy the Fluentd configuration file.
 COPY td-agent.conf /etc/td-agent/td-agent.conf
 
 # Environment variables for configuration
 # FLUENTD_ARGS cannot be empty, so a placeholder is used. It should not have any effect because it is a default.
-ENV ELASTIC_HOST localhost
-ENV ELASTIC_PORT 9200
-ENV ELASTIC_INDEX kubernetes
-ENV FLUENTD_ARGS --use-v1-config
+ENV LOGGLY_TOKEN xyz
 
 # Run the Fluentd service.
 ENTRYPOINT "exec" "td-agent" "$FLUENTD_ARGS"

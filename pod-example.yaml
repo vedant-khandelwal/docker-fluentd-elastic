@@ -1,22 +1,18 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: fluentd-elastic
+  name: fluentd-loggly
 spec:
   containers:
-  - name: fluentd-elastic
-    image: docker.io/falkonry/fluentd-elastic:latest
+  - name: fluentd-loggly
+    image: docker.io/falkonry/fluentd-elastic:loggly
     resources:
       limits:
         cpu: 100m
         memory: 200Mi
     env:
-    - name: "ELASTIC_HOST"
-      value: "hostname"
-    - name: "ELASTIC_PORT"
-      value: "port"
-    - name: "ELASTIC_INDEX"
-      value: "kubernetes"
+    - name: "LOGGLY_TOKEN"
+      value: "token"
     volumeMounts:
     - name: varlog
       mountPath: /var/log
