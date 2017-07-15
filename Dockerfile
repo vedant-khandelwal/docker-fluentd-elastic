@@ -38,7 +38,7 @@ COPY td-agent.conf /etc/td-agent/td-agent.conf
 
 # Environment variables for configuration
 # FLUENTD_ARGS cannot be empty, so a placeholder is used. It should not have any effect because it is a default.
-ENV LOGGLY_TOKEN xyz
+ENV LOGGLY_URL xyz
 ENV FLUENTD_ARGS --use-v1-config
 
 # Run the Fluentd service.
