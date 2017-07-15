@@ -29,8 +29,7 @@ RUN /usr/bin/curl -L https://td-toolbelt.herokuapp.com/sh/install-ubuntu-trusty-
 # Needed to allow access to /var/log/docker/... files.
 RUN sed -i -e "s/USER=td-agent/USER=root/" -e "s/GROUP=td-agent/GROUP=root/" /etc/init.d/td-agent
 
-# Install the Kubernetes and Splunk Fluentd plug-ins.
-# Note: net-http-persistent library is required by splunk plugin, but not automatically installed
+# Install the Kubernetes and loggly Fluentd plug-ins.
 RUN td-agent-gem install fluent-plugin-kubernetes_metadata_filter net-http-persistent fluent-plugin-loggly
 
 # Copy the Fluentd configuration file.
